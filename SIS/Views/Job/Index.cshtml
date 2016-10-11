@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "JobIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/bundles/jqwidgets/css")
+
+<h3 class="heading">Maintenance - Job</h3>
+<div class="formSep">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <button id="btnAdd" type="button" class="btn btn-sm btn-default">
+                <i class="splashy-document_letter_new"></i> Add
+            </button>
+            <button id="btnEdit" type="button" class="btn btn-sm btn-default">
+                <i class="splashy-document_letter_edit"></i> Edit
+            </button>
+            <button id="btnRemove" type="button" class="btn btn-sm btn-default">
+                <i class="splashy-document_letter_remove"></i> Remove
+            </button>
+        </div>       
+    </div>    
+</div>
+<div id="jobs"></div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqwidgets")
+
+    <script>
+        $(document).ready(function () {
+            var source =
+                {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'id', type: 'int' },
+                        { name: 'JobCode', type: 'string' },
+                        { name: 'JobName', type: 'string' },
+                        { name: 'DateCreated', type: "date" },
+                        { name: 'DateUpdated', type: "date" }
+                    ],
+                    url: '/api/Job/getJobList'
+                };
+
+                var dataAdapter = new $.jqx.dataAdapter(source);
+                var jobList = $("#jobs");
+
+                jobList.jqxGrid({
+                    width: '100%',
+                    theme: "bootstrap",
+                    source: dataAdapter,
+                    columnsresize: true,
+                    selectionmode: 'singlerow',
+                    columns: [{ text: 'Job Code', datafield: 'JobCode', width: '6%' },
+							  { text: 'Job Name', datafield: 'JobName', width: '70%' },
+							  { text: 'Date Created', datafield: 'DateCreated', width: '12%', cellsformat: 'yyyy-MM-dd HH:MM' },
+							  { text: 'Date Updated', datafield: 'DateUpdated', width: '12%', cellsformat: 'yyyy-MM-dd HH:MM' }]
+                });
+
+				jobList.jqxGrid("autoresizecolumns");
+
+                $("#btnAdd").on("click", function () {
+                    $(location).attr('href', '/Job/New');
+                });
+
+                $("#btnRemove").on("click", function () {
+                    var rowIndex = jobList.jqxGrid('getselectedrowindex');
+                    var selectedRowsCount = jobList.jqxGrid('getselectedrowindexes');
+                    var dataRecord = jobList.jqxGrid('getrowdata', rowIndex);
+
+                    if (selectedRowsCount.length > 0) {
+                        smoke.confirm('Do you want to delete this record?', function(e) {
+                                if (e) {
+                                    $.ajax({
+                                        type: "DELETE",
+                                        url: "/api/Job/" + dataRecord.id,
+                                        success: function(result) {
+                                        	jobList.jqxGrid("updatebounddata", "cells");
+                                        	$.sticky("Record deleted.", { autoclose: 5000, position: "top-center", type: "st-error" });
+                                        }
+                                    });
+                                }
+                            },
+                            { ok: "Delete", cancel: "Cancel" });
+                    } else {
+                        $.sticky("Please select record to delete.", { autoclose: 5000, position: "top-center", type: "st-error" });
+                    }
+                });
+
+                $("#btnEdit").on("click", function () {
+                    var rowIndex = jobList.jqxGrid('getselectedrowindex');
+                    var dataRecord = jobList.jqxGrid('getrowdata', rowIndex);
+                    $(location).attr('href', '/Job/Edit/' + dataRecord.id);
+                });
+				
+            });
+    </script>
+}

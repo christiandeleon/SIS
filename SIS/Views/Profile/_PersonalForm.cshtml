@@ -1,0 +1,153 @@
+﻿@using SIS.Controllers
+@using SIS.Models
+@using SIS.ViewModels
+@model SIS.ViewModels.ProfileViewModel
+
+@using (Html.BeginForm("SavePersonal", "Profile", FormMethod.Post, new { @id = "formId" }))
+{
+	<div class="col-sm-6 col-md-6">
+		<h3 class="heading">Personal Detail</h3>
+		<div class="formSep">
+			<div class="row">
+				<div class="col-sm-6 col-md-6">
+					@Html.LabelFor(p => p.Personal.title)
+					@{
+						List<SelectListItem> lstTittle = new List<SelectListItem>();
+						lstTittle.Add(new SelectListItem { Text = "Mr", Value = "Mr" });
+						lstTittle.Add(new SelectListItem { Text = "Ms", Value = "Ms" });
+						lstTittle.Add(new SelectListItem { Text = "Miss", Value = "Miss" });
+						lstTittle.Add(new SelectListItem { Text = "Mrs", Value = "Mrs" });
+					}
+					@Html.DropDownListFor(p => p.Personal.title, lstTittle, "", new { @class = "form-control input-sm" })
+					@Html.ValidationMessageFor(p => p.Personal.title)
+				</div>
+				<div class="col-sm-6 col-md-6">
+					@{
+						List<SelectListItem> lstGender = new List<SelectListItem>();
+						lstGender.Add(new SelectListItem { Text = "Male", Value = "M" });
+						lstGender.Add(new SelectListItem { Text = "Female", Value = "F" });
+					}
+					@Html.LabelFor(p => p.Personal.gender)
+					@Html.DropDownListFor(p => p.Personal.gender, lstGender, "", new { @class = "form-control input-sm" })
+					@Html.ValidationMessageFor(p => p.Personal.gender)
+				</div>
+			</div>
+		</div>
+		<div class="formSep">
+			<div class="row">
+				<div class="col-sm-6 col-md-6">
+					@Html.LabelFor(p => p.Personal.firstName)
+					@Html.TextBoxFor(p => p.Personal.firstName, new { @class = "form-control input-sm" })
+					@Html.ValidationMessageFor(p => p.Personal.firstName)
+				</div>
+				<div class="col-sm-6 col-md-6">
+					@Html.LabelFor(p => p.Personal.lastName)
+					@Html.TextBoxFor(p => p.Personal.lastName, new { @class = "form-control input-sm" })
+					@Html.ValidationMessageFor(p => p.Personal.lastName)
+				</div>
+			</div>
+		</div>
+		<div class="formSep">
+			@Html.LabelFor(p => p.Personal.birthDate)
+			@Html.TextBoxFor(p => p.Personal.birthDate, new { @class = "form-control input-sm dateformat" })
+			@Html.ValidationMessageFor(p => p.Personal.birthDate)
+		</div>
+		<div class="formSep">
+			<div class="row">
+				<div class="col-sm-6 col-md-6">
+					@Html.LabelFor(p => p.Personal.contactNo)
+					@Html.TextBoxFor(p => p.Personal.contactNo, new { @class = "form-control input-sm" })
+					@Html.ValidationMessageFor(p => p.Personal.contactNo)
+				</div>
+				<div class="col-sm-6 col-md-6">
+					@Html.LabelFor(p => p.Personal.email)
+					@Html.TextBoxFor(p => p.Personal.email, new { @class = "form-control input-sm" })
+					@Html.ValidationMessageFor(p => p.Personal.email)
+				</div>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col-sm-6 col-md-6">
+				@Html.LabelFor(p => p.Personal.street)
+				@Html.TextBoxFor(p => p.Personal.street, new { @class = "form-control input-sm" })
+				@Html.ValidationMessageFor(p => p.Personal.street)
+			</div>
+			<div class="col-sm-6 col-md-6">
+				@Html.LabelFor(p => p.Personal.suburb)
+				@Html.TextBoxFor(p => p.Personal.suburb, new { @class = "form-control input-sm" })
+				@Html.ValidationMessageFor(p => p.Personal.suburb)
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6 col-md-6">
+				@{
+					List<SelectListItem> lstState = new List<SelectListItem>();
+					lstState.Add(new SelectListItem { Text = "New South Wales", Value = "NSW" });
+					lstState.Add(new SelectListItem { Text = "Victoria", Value = "VIC" });
+					lstState.Add(new SelectListItem { Text = "Queensland", Value = "QLD" });
+					lstState.Add(new SelectListItem { Text = "Western Australia", Value = "WA" });
+					lstState.Add(new SelectListItem { Text = "South Australia", Value = "SA" });
+					lstState.Add(new SelectListItem { Text = "Australian Capital Teritory", Value = "ACT" });
+					lstState.Add(new SelectListItem { Text = "Tasmania", Value = "TAS" });
+					lstState.Add(new SelectListItem { Text = "Northern Teritory", Value = "NT" });
+				}
+				@Html.LabelFor(p => p.Personal.state)
+				@Html.DropDownListFor(p => p.Personal.state, lstState, "", new { @class = "form-control input-sm" })
+				@Html.ValidationMessageFor(p => p.Personal.state)
+			</div>
+			<div class="col-sm-6 col-md-6">
+				@Html.LabelFor(p => p.Personal.postCode)
+				@Html.TextBoxFor(p => p.Personal.postCode, new { @class = "form-control input-sm" })
+				@Html.ValidationMessageFor(p => p.Personal.postCode)
+			</div>
+		</div>
+
+	</div>
+	<div class="col-sm-6 col-md-6">
+		<h3 class="heading">Next of Kin Details</h3>
+		<div class="formSep">
+			@Html.LabelFor(p => p.Personal.kinName)
+			@Html.TextBoxFor(p => p.Personal.kinName, new { @class = "form-control input-sm" })
+			@Html.ValidationMessageFor(p => p.Personal.kinName)
+		</div>
+		<div class="formSep">
+			@Html.LabelFor(p => p.Personal.kinRelationship)
+			@Html.TextBoxFor(p => p.Personal.kinRelationship, new { @class = "form-control input-sm" })
+			@Html.ValidationMessageFor(p => p.Personal.kinRelationship)
+		</div>
+		<div class="formSep">
+			@Html.LabelFor(p => p.Personal.kinContactNo)
+			@Html.TextBoxFor(p => p.Personal.kinContactNo, new { @class = "form-control input-sm" })
+			@Html.ValidationMessageFor(p => p.Personal.kinContactNo)
+		</div>
+	</div>
+	@Html.HiddenFor(p => p.Personal.id, new { @value = 0 })
+						@Html.HiddenFor(p => p.Personal.empId, new { @valule = 0 })
+						@Html.HiddenFor(p => p.Personal.appId, new { @value = 0 })
+						@Html.HiddenFor(p => p.Personal.userId, new { @value = 0 })
+						@Html.HiddenFor(p => p.Personal.dateCreated, new { @value = DateTime.Now })
+						@Html.HiddenFor(p => p.Personal.dateUpdated, new { @value = DateTime.Now })
+
+						<div class="col-sm-6 col-md-12">
+							<div class="form-actions">
+								<div class="row" style="float: right;">
+									<button type="submit" id="btnSave" class="btn btn-sm btn-default">
+										<i class="splashy-document_letter_edit"></i> Save
+									</button>
+									<button type="button" id="btnCancel" class="btn btn-sm btn-default">
+										<i class="splashy-document_letter_remove"></i> Cancel
+									</button>
+								</div>
+							</div>
+						</div>
+						}
+@section scripts {
+
+	<script>
+
+
+
+	</script>
+}
